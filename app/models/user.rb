@@ -5,7 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
          
   has_many :post_images, dependent: :destroy
-  
+  has_many :post_comments, dependent: :destroy
+  #Userのデータが削除されたとき、そのUserが投稿したコメントデータも一緒に削除
   has_one_attached :profile_image        
   #profile_imageという名前でActiveStorageでプロフィール画像を保存できるように設定.
   
