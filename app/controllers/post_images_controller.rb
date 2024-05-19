@@ -21,6 +21,12 @@ class PostImagesController < ApplicationController
      #current_userはログイン中のユーザーを表す。`post_images`はUserモデルとPostImageモデルの間に定義された関連.
      #findは、指定したidと関連するUserが所有するPostImageを検索.
   end
+  
+  def destroy
+    post_image = 削除するPostImageレコードを取得
+    post_image.削除
+    redirect_to PostImageの一覧ページへのパス
+  end
 
    # 投稿データのストロングパラメータ
   private
