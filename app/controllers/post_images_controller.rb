@@ -12,12 +12,14 @@ class PostImagesController < ApplicationController
   end
 
   def index
-     @post_images = PostImage.all
+     @post_images = PostImage.all #post_imagesテーブル内に存在する全てのレコードのインスタンスを代入
 
   end
 
   def show
-     @post_image = PostImage
+     @post_image = current_user.post_images.find(params[:id])
+     #current_userはログイン中のユーザーを表す。`post_images`はUserモデルとPostImageモデルの間に定義された関連.
+     #findは、指定したidと関連するUserが所有するPostImageを検索.
   end
 
    # 投稿データのストロングパラメータ
