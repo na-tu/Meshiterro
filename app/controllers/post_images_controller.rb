@@ -20,6 +20,7 @@ class PostImagesController < ApplicationController
      @post_image = current_user.post_images.find(params[:id])
      #current_userはログイン中のユーザーを表す。`post_images`はUserモデルとPostImageモデルの間に定義された関連.
      #findは、指定したidと関連するUserが所有するPostImageを検索.
+     @post_comment = PostComment.new
   end
   
   def destroy

@@ -9,6 +9,7 @@ class User < ApplicationRecord
   #Userのデータが削除されたとき、そのUserが投稿したコメントデータも一緒に削除
   has_one_attached :profile_image        
   #profile_imageという名前でActiveStorageでプロフィール画像を保存できるように設定.
+  has_many :favorites, dependent: :destroy
   
   def get_profile_image(width, height)#プロフィール画像を取得するためのメソッド.
     unless profile_image.attached?
