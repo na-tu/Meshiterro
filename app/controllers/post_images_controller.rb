@@ -4,15 +4,19 @@ class PostImagesController < ApplicationController
   end
 
   # 投稿データの保存
+
   def create
     @post_image = PostImage.new(post_image_params) #フォームに入力したデータが@post_imageに格納
     @post_image.user_id = current_user.id
-    @post_image.save
-    redirect_to post_images_path
+    if @post_image.save
+      redirect_to post_images_path
+    else
+      render :new
+    end
   end
 
   def index
-     @post_images = PostImage.all #post_imagesテーブル内に存在する全てのレコードのインスタンスを代入
+     @post_images = PostImage.page(params[:page])
 
   end
 
