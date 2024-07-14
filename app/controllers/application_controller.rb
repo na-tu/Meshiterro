@@ -1,19 +1,26 @@
 class ApplicationController < ActionController::Base
- before_action :authenticate_user!, except: [:top]
- before_action :configure_permitted_parameters, if: :devise_controller?#devise利用の機能（ユーザ登録、ログイン認証など）が使われる前にconfigure_permitted_parametersメソッドが実行
+ before_action :authenticate_user!, except: [:top],unless: :admin_controller?#authenticate_user!フィルターが適用されなくなる状態を作り出す(権限の設定)
 
-  def after_sign_in_path_for(resource)
-    post_images_path #ログイン後は投稿画像一覧（post_images）に遷移.
+
+ private
+ 
+  def configure_authentication
+    if admin_controller?
+      authenticate_admin!
+    else
+      authenticate_user! unless action_is_public?
+    end
   end
-
-  def after_sign_out_path_for(resource)
-    about_path
+ 
+  def admin_controller?
+    self.class.module_parent_name == 'Admin'
+  end#Admin名前空間内のコントローラー（例: Admin::DashboardController）では
+  #authenticate_user!フィルターが適用されなくなります。
+  #これは、管理者用のコントローラーでエンドユーザー側の認証を避け、
+  #代わりに管理者用の認証（例: authenticate_admin!）を行いたい場合に役立.
+ 
+  def action_is_public?
+    controller_name == 'homes' && action_name == 'top'
   end
-
-  protected#呼び出された他のコントローラからも参照できる。（privateは記述をしたコントローラ内でしか参照できない）
-
-  def configure_permitted_parameters#これをコマンドすることで、”devise_parameter_sanitizer.permitメソッドを使うとユーザー登録(sign_up)の際に、ユーザー名(name)のデータ操作を許可する。
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
-  end
-
+ 
 end

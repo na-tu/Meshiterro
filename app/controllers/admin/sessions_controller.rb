@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Admin::SessionsController < Devise::SessionsController
+  layout 'admin'#管理者でログインしている際には、ログアウトのリンクが表示される
+  
   # before_action :configure_sign_in_params, only: [:create]
 
   # GET /resource/sign_in
